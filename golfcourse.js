@@ -563,12 +563,13 @@ function showWeather(response) {
   for (j = 0; j < dateList.length; j++) {
     var date = new Date(dateList[j].dt_txt);
     var weekday = date.getDay();
+    
   
     htmlCode = `
     <span>
     <h4>${weekDays[weekday]} ${dateList[0].dt_txt}</h4>
     <img src= http://openweathermap.org/img/w/${dateList[j].weather[0].icon}.png><p>${Math.round(dateList[j].main.temp)}&#730</p>
-    <hr>
+    
     </span>
     <br>
     `
