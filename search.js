@@ -218,7 +218,7 @@ function fetchInfo(e) {
   appendCards.appendChild(spinner)
   spinner.style.display = 'block'
   filter.style.display = 'flex'
-
+  //filter.className = 'wrapper2show'
   province = '&provinces='
   city = '&cities='
   sortIn = '&sort_in='
@@ -289,8 +289,8 @@ function fetchInfo(e) {
       for (i = 0; i < data.payload.length; i++) {
         div = document.createElement('div')
         
-        htmlCode = `<div class='cards'>
-        <img src=${pics[i].url}>
+        htmlCode = `<div class=cards>
+        <img id= cardImg src=${pics[i].url}>
         <span>
          <h1>${data.payload[i].name}</h1>
         <h2>${data.payload[i].city}</h2><br>
@@ -300,7 +300,7 @@ function fetchInfo(e) {
         <div id="search2">
         <h4 class=readmore data-photoid=${pics[i].photoid} data-id=${data.payload[i].id}>VÄLJ</h4></div>
         </span>
-
+        </div>
        `
          
         appendCards.innerHTML += htmlCode
