@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+
+<head>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300&display=swap" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css2?family=Abel&family=Abril+Fatface&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+ <link rel="canonical" href="https://webappeditor.com/Grupp1golf/projektkurs-golf/master/index.html"/>
+ <meta name="robots" content="index">
+ 
+
+  <title>Smögolf - hitta golfdestination i Småland och på Öland</title>
+
+  <link href="style.css" rel="stylesheet">
+
+  <script type="text/javascript" src="search.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Smögolf hjälper er hitta er nästa golfdestionation oasvett preferenser. Se väntat väder för golfdestinationen och sortera på pris och betyg. Upptäck Småland och Öland med golf!">
+</head>
+
+<body>
+  <header>
+	  
+    <a href="index.html"><img src="./logga7.png" alt="logga" width="100"></a>
+    <h1>Upptäck Småland och Öland med golf</h1>
+
+  </header>
+  <div id='wrapper1'>
+    <div class='select'>
+    
+    <label for="province" id="lProv">VÄLJ LANDSKAP :</label>
+    <br>
+    <p> </p>
+    <br>
+    <select id="province">
+         <option value="">ALLA</option>
+    </select>
+      
+    </div>
+    <div class ='select'>
+    <label for="city" id=lCity>VÄLJ STAD :</label>
+    <br>
+    <p> </p>
+    <br>
+    <select id="city">
+        <option value="">ALLA</option>
+    </select>
+      
+		   </div>
+		   
+		   
+		  <button id="search">SÖK</button>
+		  
+
+    
+    </div>
+    
+<div id='wrapper2'>
+<div class='filter'>
+ <!-- <h3>Filtrera</h3>
+   <p>Pris:</p>
+  <input type="range" min="1" max="100" value="50">
+  <h3>Filtrera</h3>
+   <p>Rating:</p>
+  <input type="range" min="1" max="100" value="50">
+  -->
+  <label for="sort" id="lSort">Sortera efter</label>
+    <br>
+    <p> </p>
+    <select id="sort">
+         <option value="">Alla</option>
+         <option value="lowprice">Pris: Lågt-högt</option>
+         <option value="highprice">Pris Högt-låg</option>
+         <option value="lowrating">Betyg: Lågt-högt</option>
+         <option value="highrating">Betyg: Högt-lågt</option>
+    </select>
+    
+</div>
+<div id ='appendcards'> <!--Appenda div med klass cards till denna div med inläsning av SMAPI -->
+<div class = 'cards' id='spinnerouter'>
+<img id='spinner' src="Loadspinner-1s-200px.svg">
+</div>
+ <!--<div id='cards'>
+  
+  <img src='http://placekitten.com/300/225'>
+   <span>
+     <h2>Golfbana</h2>
+     <h4>Stad</h4>
+     <h4>Hål</h4>
+     <h4>Pris</h4>
+     <h4>Betyg</h4>
+     <h4>Väder just nu</h4>
+
+   </span>
+   
+</div>
+-->
+</div>
+</div>
+<span id='headline'><h1>Veckans golfbanor</h1></span>
+
+  <div id='wrapper3'>
+    <img src='./kalmargk2.jpg' alt="Bild Kalmar GK" id="pic1" class="pic" data-photoid="6" data-id="67">
+    <img src='./eke2.jpg' alt="Bild Eksjö Golfbana" id="pic2" class="pic" data-photoid="4" data-id="58">
+    <img src='./ekerum3.jpg' alt="Bild Ekerum Golf & Resort" id="pic3" class="pic" data-photoid="8" data-id="57">
+    <img src='./glas.jpg' alt="Bild Glasrikets Golfklubb" id="pic4" class="pic" data-photoid="9" data-id="61">
+    
+		</div><!--End wrapper3-->
+		
+	<footer>
+	  <h4 id="title1">SMÖGOLF</h4>
+	  <br>
+	  <p>Letar ni efter er nästa golfdestination? <br> Smögolf hjälper er hitta er nästa golfdestionation, oavsett om det är en golfresa på tu man hand,  med vänner, familj <br> eller arbetslaget. Smögolf hjälper dig att hitta det perfekta golfresemålet utifrån dina preferenser.<br> Upptäck Småland och Öland med golf!</p>
+	  <br>
+	  <p>Telefon: xxx-3246797</p>
+	  <p>Mejl:smogolf@gmail.com</p>
+	  <p>Besöksadress: Stallvägen xx, 325 56, Växjö</p>
+	</footer>
+</body>
