@@ -168,7 +168,7 @@ select {
 	box-shadow: 3px 3px 7px -5px rgba(0,0,0,0.48);
 }
 .cards img {
-  width: auto;
+  width: 70%;
   margin-right:20px;
 }
 
@@ -337,3 +337,27 @@ footer {
   font-size:18px;
 }
 
+@media only screen and (max-width: 600px) {
+  #wrapper1 {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 1000px;
+  margin: auto;
+  margin-bottom: 10px;
+  margin-top:10px;
+  padding: 10px;
+  box-sizing: border-box;
+  margin-top: -50px;
+-webkit-box-shadow: 3px 3px 7px -5px rgba(0,0,0,0.48);
+	-moz-box-shadow: 3px 3px 7px -5px rgba(0,0,0,0.48);
+	box-shadow: 3px 3px 7px -5px rgba(0,0,0,0.48);
+}
+
+header {
+    margin-bottom:40px;
+  }
+
+}
