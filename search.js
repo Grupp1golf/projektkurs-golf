@@ -126,12 +126,14 @@ async function initOptions() {
       console.error('Error:', error)
       console.log('det blev fel')
     })
-    /*if(sessionStorage.getItem('result') != null) {
+    if(sessionStorage.getItem('result') != null) {
      provinceElem.value = sessionStorage.getItem('province')
-     cityElem.value = sessionStorage.getItem('city')
      sort.value = sessionStorage.getItem('sort')
+     dynamicOptions()
+     cityElem.value = sessionStorage.getItem('city')
+
   }
-*/
+
 }
 // Funnktion för att initiera fitlerinställningar
 function initFilter() {
@@ -150,7 +152,7 @@ function initFilter() {
 }
 
 //Funktion för att selecten ska dynamiskt ändras beroende på vad användaren väljer för landskap.
-function dynamicOptions() {
+async function dynamicOptions() {
   var province
   var cityOptions
   cityOptions = []
@@ -172,7 +174,7 @@ function dynamicOptions() {
       break;
 
   }
-  fetch(`https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&debug=true&controller=establishment&method=getall&descriptions=Golfbana&${province}`)
+  await fetch(`https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&debug=true&controller=establishment&method=getall&descriptions=Golfbana&${province}`)
     .then((response) => {
       return response.json()
     })
@@ -185,6 +187,8 @@ function dynamicOptions() {
           cityOptions.push(data.payload[i].city)
         }
       }
+      console.log('detta e citty optns', cityOptions.sort())
+      cityOptions.sort()
       opt = document.createElement('option')
       opt.value = ''
       opt.innerHTML = 'Alla'
@@ -200,6 +204,11 @@ function dynamicOptions() {
       console.error('Error:', error)
       console.log('det blev fel')
     })
+    /*if(sessionStorage.getItem('result') != null) {
+     cityElem.value = sessionStorage.getItem('city')
+
+  }
+  */
 }
 
 function fetchWeatcher() {
@@ -323,17 +332,19 @@ function fetchInfo(e) {
       console.log('det blev fel')
     })
  sessionStorage.setItem('result', url);   
- sessionStorage.setItem('province', provinceElem.value)
- sessionStorage.setItem('city', cityElem.value)
- sessionStorage.setItem('sort', sort.value)
 }
 
 function testClick () {
   console.log(this.id)
   localStorage.setItem("course", this.dataset.id)
   localStorage.setItem("photo", this.dataset.photoid)
+  
+ sessionStorage.setItem('province', provinceElem.value)
+ sessionStorage.setItem('city', cityElem.value)
+ sessionStorage.setItem('sort', sort.value)
   //window.open("golfcourse.html");
   location.assign("golfcourse.html"); 
+  
 }
 
 
