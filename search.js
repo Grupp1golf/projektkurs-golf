@@ -8,11 +8,7 @@ var appendCards // Referens till en div i HTML där resultatkorten ska presenter
 var sort // Referens för sroteringsselect.
 var spinner // Innehåller spinner från html
 var pics //Array med bildder
-var pic1;
-var pic2;
-var pic3;
-var pic4;
-var pics;
+var logo
 
 // funtion init
 function init() {
@@ -23,7 +19,7 @@ function init() {
   appendCards = document.getElementById('appendcards')
   sort = document.getElementById('sort')
   spinner = document.getElementById('spinnerouter')
-  
+  logo = document.getElementById('logo')
   pics = document.getElementsByClassName('pic')
   console.log('picss', pics)
   for (i = 0; i < pics.length; i++) {
@@ -33,16 +29,16 @@ function init() {
   provinceElem.addEventListener('change', dynamicOptions)
   searchBtn.addEventListener('click', fetchInfo)
   sort.addEventListener('change', fetchInfo)
+  logo.addEventListener('click', clearStorage)
 
   initOptions()
   initFilter()
   initPicArray()
   
    if(sessionStorage.getItem('result') != null) {
-    
      fetchInfo()
-    
   }
+  
   
   
   /*pic1= document.getElementById ("pic1");
@@ -60,7 +56,10 @@ function init() {
 }
 
 window.addEventListener('load', init)
+function clearStorage() {
+  sessionStorage.clear();
 
+}
 //Initierar en array med bilder som senare kommer visas i resutlat
 function initPicArray() {
   pics = []
@@ -85,13 +84,13 @@ function initPicArray() {
 }
 
 //Fetch för att hämta api och därfter lägga till select-taggar i option tagen i html. 
-function initOptions() {
+async function initOptions() {
   var cityOptions
   var opt
   var i
   provinceOptions = []
   cityOptions = []
-  fetch('https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&debug=true&controller=establishment&method=getall&descriptions=Golfbana')
+  await fetch('https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&debug=true&controller=establishment&method=getall&descriptions=Golfbana')
     .then((response) => {
       return response.json()
     })
@@ -127,7 +126,12 @@ function initOptions() {
       console.error('Error:', error)
       console.log('det blev fel')
     })
-
+    /*if(sessionStorage.getItem('result') != null) {
+     provinceElem.value = sessionStorage.getItem('province')
+     cityElem.value = sessionStorage.getItem('city')
+     sort.value = sessionStorage.getItem('sort')
+  }
+*/
 }
 // Funnktion för att initiera fitlerinställningar
 function initFilter() {
@@ -319,6 +323,9 @@ function fetchInfo(e) {
       console.log('det blev fel')
     })
  sessionStorage.setItem('result', url);   
+ sessionStorage.setItem('province', provinceElem.value)
+ sessionStorage.setItem('city', cityElem.value)
+ sessionStorage.setItem('sort', sort.value)
 }
 
 function testClick () {
