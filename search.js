@@ -77,7 +77,7 @@ async function initOptions() {
   provinceOptions = [];
   cityOptions = [];
   await fetch(
-    "https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&debug=true&controller=establishment&method=getall&descriptions=Golfbana"
+    "https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&controller=establishment&method=getall&descriptions=Golfbana"
   )
     .then((response) => {
       return response.json();
@@ -136,7 +136,7 @@ async function dynamicOptions() {
     province = "";
   }
   await fetch(
-    `https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&debug=true&controller=establishment&method=getall&descriptions=Golfbana&${province}`
+    `https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&controller=establishment&method=getall&descriptions=Golfbana&${province}`
   )
     .then((response) => {
       return response.json();
@@ -263,7 +263,7 @@ function fetchInfo(e) {
   }
 
   if (e) {
-    url = `https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&debug=true&controller=establishment&${method}&${lat}${lng}descriptions=golfbana${province}${city}${orderBy}${sortIn}${radius}`;
+    url = `https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&controller=establishment&${method}&${lat}${lng}descriptions=golfbana${province}${city}${orderBy}${sortIn}${radius}`;
   } else {
     url = sessionStorage.getItem("result");
   }
