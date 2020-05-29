@@ -104,7 +104,7 @@ function backToSearch() {
 //Anropa data från smapi för information till infobox samt beskrivningen.
 async function requestDescription(userP) {
   await fetch(
-    `https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&debug=true&controller=establishment&method=getall&descriptions=golfbana&ids=${id}`
+    `https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&controller=establishment&method=getall&descriptions=golfbana&ids=${id}`
   )
     .then((response) => {
       return response.json();
@@ -134,7 +134,7 @@ function success(pos) {
 //Anropa data från smapi för information till restauranger i närheten.
 function requestDescriptionFood(course) {
   fetch(
-    `https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&debug=true&controller=establishment&method=getall&descriptions=golfbana&ids=${id}`
+    `https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&controller=establishment&method=getall&descriptions=golfbana&ids=${id}`
   )
     .then((response) => {
       return response.json();
@@ -149,7 +149,7 @@ function requestDescriptionFood(course) {
 //Anropa data från smapi för information till boenden i närheten.
 function requestDescriptionA(course) {
   fetch(
-    `https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&debug=true&controller=establishment&method=getall&descriptions=golfbana&ids=${id}`
+    `https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&controller=establishment&method=getall&descriptions=golfbana&ids=${id}`
   )
     .then((response) => {
       return response.json();
