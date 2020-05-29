@@ -1,370 +1,344 @@
 // Globala variabler
-var cityElem // Referens för select-tag för stad
-var provinceElem // Referns för selec-tag för landskap
-var provinceOptions // Arary som innehåller landskap från SMAPI
-var searchBtn // Referens för en knapp i HTML.
-var filter
-var appendCards // Referens till en div i HTML där resultatkorten ska presenteras.
-var sort // Referens för sroteringsselect.
-var spinner // Innehåller spinner från html
-var pics //Array med bildder
-var logo
+var cityElem; // Referens för select-tag för stad
+var provinceElem; // Referns för selec-tag för landskap
+var provinceOptions; // Arary som innehåller landskap från SMAPI
+var searchBtn; // Referens för en knapp i HTML.
+var resultWrapper; // Referens för wrapper2 i HTML som innehåller sortering och resultat
+var appendCards; // Referens till en div i HTML där resultatkorten ska presenteras.
+var sort; // Referens för sroteringsselect.
+var spinner; // Innehåller spinner från html
+var pics; //Array med bildder
+var logo; // Referns till loggan
+var scrollBtn; // Referens till pilen
+var userP; // Användarens position
+var geoFeedback; // Feedback för att sätta på platsinformation
 
-// funtion init
+// Denna funktionen anropas när webbsidan har laddats in.
 function init() {
-  provinceElem = document.getElementById('province')
-  cityElem = document.getElementById('city')
-  searchBtn = document.getElementById('search')
-  filter = document.getElementById('wrapper2')
-  appendCards = document.getElementById('appendcards')
-  sort = document.getElementById('sort')
-  spinner = document.getElementById('spinnerouter')
-  logo = document.getElementById('logo')
-  pics = document.getElementsByClassName('pic')
-  console.log('picss', pics)
-  for (i = 0; i < pics.length; i++) {
-    pics[i].addEventListener('click', testClick)
-  }
-  
-  provinceElem.addEventListener('change', dynamicOptions)
-  searchBtn.addEventListener('click', fetchInfo)
-  sort.addEventListener('change', fetchInfo)
-  logo.addEventListener('click', clearStorage)
+  provinceElem = document.getElementById("province");
+  cityElem = document.getElementById("city");
+  searchBtn = document.getElementById("search");
+  resultWrapper = document.getElementById("wrapper2");
+  appendCards = document.getElementById("appendcards");
+  sort = document.getElementById("sort");
+  spinner = document.getElementById("spinnerouter");
+  logo = document.getElementById("logo");
+  pics = document.getElementsByClassName("pic");
+  scrollBtn = document.getElementById("scrollBtn");
+  geoFeedback = document.getElementById("geofeedback");
 
-  initOptions()
-  initFilter()
-  initPicArray()
-  
-   if(sessionStorage.getItem('result') != null) {
-     fetchInfo()
+  for (i = 0; i < pics.length; i++) {
+    pics[i].addEventListener("click", nextPage);
   }
-  
-  
-  
-  /*pic1= document.getElementById ("pic1");
-  pic1.addEventListener('click', pictureOne);
-  
-  pic2= document.getElementById ("pic2");
-  pic2.addEventListener('click', pictureTwo);
-  
-  pic3= document.getElementById ("pic3");
-  pic3.addEventListener('click', pictureThree);
-  
-  pic4= document.getElementById ("pic4");
-  pic4.addEventListener('click', pictureFour);
-  */
+
+  provinceElem.addEventListener("change", dynamicOptions);
+  searchBtn.addEventListener("click", fetchInfo);
+  sort.addEventListener("change", fetchInfo);
+  logo.addEventListener("click", clearStorage);
+
+  initOptions();
+  initPicArray();
+
+  if (sessionStorage.getItem("result") != null) {
+    fetchInfo();
+  }
+
+  navigator.geolocation.getCurrentPosition(success);
 }
 
-window.addEventListener('load', init)
+window.addEventListener("load", init);
+
+// Denna funktion anropas när användaren trycker på ikonen
+// Funktionen rensar sessionStorage, vilket innehåller användarens sökningar
 function clearStorage() {
   sessionStorage.clear();
-
 }
-//Initierar en array med bilder som senare kommer visas i resutlat
+
+// Denna funktionen Initierar en array med bilder som senare kommer visas i resutlat
 function initPicArray() {
-  pics = []
-  fetch('pics.json')
+  pics = []; // En array som kommer innehålla bilder som sneare visas i resultatet
+  fetch("pics.json")
     .then((response) => {
-      return response.json()
+      return response.json();
     })
     .then((data) => {
-      console.log('initfilter', data)
-      for(i=0; i<data.image.length; i++) {
-        pics.push(data.image[i])
+      for (i = 0; i < data.image.length; i++) {
+        pics.push(data.image[i]);
       }
-     
     })
-    .catch((error) => {
-      console.error('Error:', error)
-      console.log('det blev fel')
-    })
-    
-    console.log(pics)
-    
 }
 
-//Fetch för att hämta api och därfter lägga till select-taggar i option tagen i html. 
+// Denna funktion hämtar data från SMAPI
+// Därfter lägger den till select-taggar i option tagen i html.
 async function initOptions() {
-  var cityOptions
-  var opt
-  var i
-  provinceOptions = []
-  cityOptions = []
-  await fetch('https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&debug=true&controller=establishment&method=getall&descriptions=Golfbana')
+  var cityOptions; // En array som sparar alla städer från
+  var opt; // Används för att skapa en option-tag
+  var i; //Iterationsvariabel
+  provinceOptions = [];
+  cityOptions = [];
+  await fetch(
+    "https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&debug=true&controller=establishment&method=getall&descriptions=Golfbana"
+  )
     .then((response) => {
-      return response.json()
+      return response.json();
     })
     .then((data) => {
       for (i = 0; i < data.payload.length; i++) {
         if (provinceOptions.indexOf(data.payload[i].province) == -1) {
-          provinceOptions.push(data.payload[i].province)
+          provinceOptions.push(data.payload[i].province);
         }
-
       }
       for (i = 0; i < provinceOptions.length; i++) {
-        opt = document.createElement('option')
-        opt.value = provinceOptions[i]
-        opt.innerHTML = provinceOptions[i]
-        provinceElem.appendChild(opt)
+        opt = document.createElement("option");
+        opt.value = provinceOptions[i];
+        opt.innerHTML = provinceOptions[i];
+        provinceElem.appendChild(opt);
       }
 
       for (i = 0; i < data.payload.length; i++) {
         if (cityOptions.indexOf(data.payload[i].city) == -1) {
-          cityOptions.push(data.payload[i].city)
+          cityOptions.push(data.payload[i].city);
         }
       }
 
       for (i = 0; i < cityOptions.length; i++) {
-        opt = document.createElement('option')
-        opt.value = cityOptions[i]
-        opt.innerHTML = cityOptions[i]
-        cityElem.appendChild(opt)
+        opt = document.createElement("option");
+        opt.value = cityOptions[i];
+        opt.innerHTML = cityOptions[i];
+        cityElem.appendChild(opt);
       }
-
     })
-    .catch((error) => {
-      console.error('Error:', error)
-      console.log('det blev fel')
-    })
-    if(sessionStorage.getItem('result') != null) {
-     provinceElem.value = sessionStorage.getItem('province')
-     sort.value = sessionStorage.getItem('sort')
-     dynamicOptions()
-     cityElem.value = sessionStorage.getItem('city')
-
+    
+  if (
+    sessionStorage.getItem("province") != null &&
+    sessionStorage.getItem("city") != null
+  ) {
+    provinceElem.value = sessionStorage.getItem("province");
+    sort.value = sessionStorage.getItem("sort");
+    dynamicOptions();
+    cityElem.value = sessionStorage.getItem("city");
   }
-
-}
-// Funnktion för att initiera fitlerinställningar
-function initFilter() {
-  var range
-  fetch('https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&debug=true&controller=establishment&method=getall&descriptions=Golfbana')
-    .then((response) => {
-      return response.json()
-    })
-    .then((data) => {
-      console.log('initfilter', data)
-    })
-    .catch((error) => {
-      console.error('Error:', error)
-      console.log('det blev fel')
-    })
 }
 
-//Funktion för att selecten ska dynamiskt ändras beroende på vad användaren väljer för landskap.
+// Denna funktionen gör att select-tagen för stad dynamiskt ändras
+// --> beroende på vad användaren väljer för landskap.
 async function dynamicOptions() {
-  var province
-  var cityOptions
-  cityOptions = []
-  province = 'provinces='
-  switch (provinceElem.value) {
-    case 'Småland':
-      cityElem.innerHTML = ''
-      province += provinceElem.value
-      console.log('SMÅLAND.');
-      break;
-    case 'Öland':
-      cityElem.innerHTML = ''
-      province += provinceElem.value
-      console.log('ÖLNAD.');
-      break;
-    case '':
-      cityElem.innerHTML = ''
-      province = ''
-      break;
+  var province; //Innehåller det valda landskapet, används senare för anropet av SMAPI
+  var cityOptions; //Innehåller städer, baserat på val av landskap
+  cityOptions = [];
+  province = "provinces=";
 
+  if (provinceElem.value != "") {
+    cityElem.innerHTML = "";
+    province += provinceElem.value;
+  } else {
+    cityElem.innerHTML = "";
+    province = "";
   }
-  await fetch(`https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&debug=true&controller=establishment&method=getall&descriptions=Golfbana&${province}`)
+  await fetch(
+    `https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&debug=true&controller=establishment&method=getall&descriptions=Golfbana&${province}`
+  )
     .then((response) => {
-      return response.json()
+      return response.json();
     })
     .then((data) => {
       for (i = 0; i < data.payload.length; i++) {
         if (provinceOptions.indexOf(data.payload[i].province) == -1) {
-          provinceOptions.push(data.payload[i].province)
+          provinceOptions.push(data.payload[i].province);
         }
         if (cityOptions.indexOf(data.payload[i].city) == -1) {
-          cityOptions.push(data.payload[i].city)
+          cityOptions.push(data.payload[i].city);
         }
       }
-      console.log('detta e citty optns', cityOptions.sort())
-      cityOptions.sort()
-      opt = document.createElement('option')
-      opt.value = ''
-      opt.innerHTML = 'Alla'
-      cityElem.appendChild(opt)
+      cityOptions.sort();
+      opt = document.createElement("option");
+      opt.value = "";
+      opt.innerHTML = "Alla";
+      cityElem.appendChild(opt);
       for (i = 0; i < cityOptions.length; i++) {
-        opt = document.createElement('option')
-        opt.value = cityOptions[i]
-        opt.innerHTML = cityOptions[i]
-        cityElem.appendChild(opt)
+        opt = document.createElement("option");
+        opt.value = cityOptions[i];
+        opt.innerHTML = cityOptions[i];
+        cityElem.appendChild(opt);
       }
     })
-    .catch((error) => {
-      console.error('Error:', error)
-      console.log('det blev fel')
-    })
-    /*if(sessionStorage.getItem('result') != null) {
-     cityElem.value = sessionStorage.getItem('city')
-
+    
+  if (
+    sessionStorage.getItem("province") != null &&
+    sessionStorage.getItem("city") != null
+  ) {
+    cityElem.value = sessionStorage.getItem("city");
+    sessionStorage.removeItem("city");
+    sessionStorage.removeItem("province");
   }
-  */
 }
 
-function fetchWeatcher() {
-  
-}
-
-//Kopplat till sökknappen och hämtar golfbanor från SMAPI beroende på användaren har valt.
+// Denna funktionen anropas av sökknappen och hämtar golfbanor från SMAPI
+// --> beroende på användaren har valt.
 function fetchInfo(e) {
- 
-  var province // Textsträng för lanskap
-  var city // Textsträng för stad
-  var url // Innehåller URL
-  var div
-  var htmlCode // Innehåller HTMLkod
-  var cards
-  var readMore
-  var sortIn
-  var sortBy
-  appendCards.innerHTML = ''
-  appendCards.appendChild(spinner)
-  spinner.style.display = 'block'
-  filter.style.display = 'flex'
-  //filter.className = 'wrapper2show'
-  province = '&provinces='
-  city = '&cities='
-  sortIn = '&sort_in='
-  orderBy = '&order_by='
+  //Dessa variabler används i samband med SMAPI
+  var province; // Textsträng för lanskap
+  var city; // Textsträng för stad
+  var url; // Innehåller URL för SMAPI anropet och är dynamsik.
+  var readMore; // Innehåller knappar från resutlatkorten
+  var sortIn; // Innehåller ett argument för SMAPI anrop som sorterar datan med ASC eller DESC
+  var orderBy; // Innehåller ett argument för SMAPI anrop som sorterar en specific datapunkt
+  var method; // Innehåller en metod för att hämta data från SMAPI
+  var lat; // Innehåller ett arguemnt för lat från användarens position, används i SMAPI
+  var lng; // Innehåller ett argument för lng från anvndarens position, används i SMAPI
+  var radius; // Innehåller ett argument för radie, abvänds i SMAPI
+  var distance; // Innehåller ett argument för att få distans i km från användarens position, används I SMAPI
+
+  var htmlCode; // Innehåller HTMLkod
+
+  lat = "";
+  lng = "";
+  radius = "";
+
+  method = "method=getall";
+  appendCards.innerHTML = "";
+  appendCards.appendChild(spinner);
+  spinner.style.display = "block";
+  resultWrapper.style.display = "flex";
+  scrollBtn.style.display = "block";
+  geofeedback.style.display = "none";
+
+  province = "&provinces=";
+  city = "&cities=";
+  sortIn = "&sort_in=";
+  orderBy = "&order_by=";
 
   switch (sort.value) {
-    case 'highprice':
-      sortIn += 'DESC'
-      orderBy += 'price_range'
+    case "highprice":
+      sortIn += "DESC";
+      orderBy += "price_range";
       break;
-    case 'lowprice':
-      sortIn += 'ASC'
-      orderBy += 'price_range'
+    case "lowprice":
+      sortIn += "ASC";
+      orderBy += "price_range";
       break;
-    case 'highrating':
-      sortIn += 'DESC'
-      orderBy += 'rating'
+    case "highrating":
+      sortIn += "DESC";
+      orderBy += "rating";
       break;
-    
-    case 'lowrating':
-      sortIn += 'ASC'
-      orderBy += 'rating'
+    case "lowrating":
+      sortIn += "ASC";
+      orderBy += "rating";
       break;
-    case '':
-      sortIn = ''
-      orderBy = ''
-      break;
+    case "closedistance":
+      if (userP) {
+        lat += `lat=${userP.lat}&`;
+        lng += `lng=${userP.lng}&`;
+        orderBy += "distance_in_km";
+        sortIn += "DESC";
+        method = "method=getfromlatlng";
+        radius = "&radius=1000km";
+        geofeedback.style.display = "none";
+      } else {
+        geofeedback.style.display = "block";
+      }
 
+      break;
+    case "":
+      sortIn = "";
+      orderBy = "";
+      break;
   }
 
-  if (cityElem.value != '') {
-    city += cityElem.value
-    JSON.stringify(city)
-    console.log(city)
+
+  if (cityElem.value != "") {
+    city += cityElem.value;
+    JSON.stringify(city);
   }
-  if (provinceElem.value != '') {
-    province += provinceElem.value
-    JSON.stringify(province)
-    console.log(province)
+  if (provinceElem.value != "") {
+    province += provinceElem.value;
+    JSON.stringify(province);
   }
 
-  if (cityElem.value == '') {
-    city = ''
-    console.log(city)
+  if (cityElem.value == "") {
+    city = "";
   }
-  if (provinceElem.value == '') {
-    province = ''
-    console.log(province)
+  if (provinceElem.value == "") {
+    province = "";
   }
-  //url = `https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&debug=true&controller=establishment&method=getall&descriptions=golfbana${province}${city}`
-  
-  if(e) {
-  url = `https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&debug=true&controller=establishment&method=getall&descriptions=golfbana${province}${city}${orderBy}${sortIn}`
+
+  if (e) {
+    url = `https://cactuar.lnu.se/smapi/api/?api_key=NTTEzuqt&debug=true&controller=establishment&${method}&${lat}${lng}descriptions=golfbana${province}${city}${orderBy}${sortIn}${radius}`;
   } else {
-    url = sessionStorage.getItem('result')
-    
+    url = sessionStorage.getItem("result");
   }
-  
-  console.log('detta e url', url)
+
   fetch(url)
     .then((response) => {
-      return response.json()
+      return response.json();
     })
     .then((data) => {
-      spinner.style.display = 'none'
-      console.log(data)
-      console.log('array', pics)
+      spinner.style.display = "none";
       for (i = 0; i < data.payload.length; i++) {
-        div = document.createElement('div')
-        
-        htmlCode = `<div class=cards>
-        <img id= cardImg src=${pics[i].url}>
-        <span>
-         <h1>${data.payload[i].name}</h1>
-        <h2>${data.payload[i].city}</h2><br>
-       <h3>Greenfee: ${data.payload[i].price_range}:-</h3><br>
-       <h3>${data.payload[i].rating - '0000'}/5  i gästbetyg</h3>
-       <br>
-        <div id="search2">
-        <h4 class=readmore data-photoid=${pics[i].photoid} data-id=${data.payload[i].id}>VÄLJ</h4></div>
-        </span>
+        div = document.createElement("div");
+
+        if (data.payload[i].distance_in_km) {
+          distance = `<h3> ${Math.ceil(
+            data.payload[i].distance_in_km
+          )} km från din position</h3>`;
+        } else {
+          distance = "";
+        }
+
+        htmlCode = `
+          <div class="cards">
+            <img id="cardImg" src="${pics[i].url}" alt="${data.payload[i].name}" />
+          <span>
+            <h1>${data.payload[i].name}</h1>
+            <h2>${data.payload[i].city}</h2>
+            <br />
+            ${distance}
+            <br />
+            <h3>Greenfee: ${data.payload[i].price_range}:-</h3>
+            <br />
+            <h3>${data.payload[i].rating - '0000'}/5 i gästbetyg</h3>
+            <br />
+            <div id="readmoreouter">
+              <h4
+                class="readmore"
+                data-photoid="${pics[i].photoid}"
+                data-id="${data.payload[i].id}"
+              >
+                LÄS MER
+              </h4>
+            </div>
+          </span>
         </div>
-       `
-         
-        appendCards.innerHTML += htmlCode
+       `;
+
+        appendCards.innerHTML += htmlCode;
       }
-      readMore = document.getElementsByClassName('readmore')
-      
-      for(i = 0; i < readMore.length; i++) {
-        readMore[i].style.cursor = 'pointer'
-        readMore[i].addEventListener('click', testClick)
+      readMore = document.getElementsByClassName("readmore");
+
+      for (i = 0; i < readMore.length; i++) {
+        readMore[i].style.cursor = "pointer";
+        readMore[i].addEventListener("click", nextPage);
       }
-      
-      
     })
-    .catch((error) => {
-      console.error('Error:', error)
-      console.log('det blev fel')
-    })
- sessionStorage.setItem('result', url);   
+    
+  sessionStorage.setItem("result", url);
+}
+function success(pos) {
+  var coord = pos.coords;
+  userLat = coord.latitude;
+  userLng = coord.longitude;
+  userP = { lat: Number(userLat), lng: Number(userLng) };
 }
 
-function testClick () {
-  console.log(this.id)
-  localStorage.setItem("course", this.dataset.id)
-  localStorage.setItem("photo", this.dataset.photoid)
-  
- sessionStorage.setItem('province', provinceElem.value)
- sessionStorage.setItem('city', cityElem.value)
- sessionStorage.setItem('sort', sort.value)
-  //window.open("golfcourse.html");
-  location.assign("golfcourse.html"); 
-  
-}
+// Denna funktionen tar användaren till nästa sida
+// --> och sparar information i storage.
+function nextPage() {
+  localStorage.setItem("course", this.dataset.id);
+  localStorage.setItem("photo", this.dataset.photoid);
 
+  sessionStorage.setItem("province", provinceElem.value);
+  sessionStorage.setItem("city", cityElem.value);
+  sessionStorage.setItem("sort", sort.value);
 
-/*function pictureOne (){
-  localStorage.setItem("course", 67 );
-  location.assign("golfcourse.html"); 
+  location.assign("golfcourse.html");
 }
-
-function pictureTwo (){
-  localStorage.setItem("course", 58);
-  location.assign("golfcourse.html"); 
-}
-
-function pictureThree (){
-  localStorage.setItem("course", 57);
-  location.assign("golfcourse.html"); 
-}
-
-function pictureFour (){
-  localStorage.setItem("course", 61);
-  location.assign("golfcourse.html"); 
-}
-*/
