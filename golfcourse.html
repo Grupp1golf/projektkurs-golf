@@ -1,115 +1,172 @@
-<!doctype html>
-<html lang="en" dir="ltr">
+<!DOCTYPE html>
+<html lang="sv" dir="ltr">
+  <head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Abel&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Abel&family=Abril+Fatface&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <meta charset="UTF-8" />
+    <meta
+      name="Description"
+      content="Smögolf hjälper er hitta er nästa golfdestionation oasvett preferenser. Se väntat väder för golfdestinationen och sortera på pris och betyg. Upptäck Småland och Öland med golf!"
+    />
+    <link
+      rel="canonical"
+      href="https://webappeditor.com/Grupp1golf/projektkurs-golf/master/index.html"
+    />
+    <title>Aktuell golfbana</title>
+    <meta name="robots" content="index" />
 
-<head>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300&display=swap" rel="stylesheet"> 
-<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet"> 
-<link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet"> 
-<link href="https://fonts.googleapis.com/css2?family=Abel&family=Abril+Fatface&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
-	<meta charset="UTF-8">
-	<meta name=Description content="Smögolf hjälper er hitta er nästa golfdestionation oasvett preferenser. Se väntat väder för golfdestinationen och sortera på pris och betyg. Upptäck Småland och Öland med golf!">
-	<link rel="canonical" href="https://webappeditor.com/Grupp1golf/projektkurs-golf/master/index.html"/>
-	<title>Aktuell golfbana</title>
-	 <meta name="robots" content="index">
-	
-	<script type="text/javascript" src="golfcourse.js"></script>
-	<script src="https://maps.googleapis.com/maps/api/js"></script>
-	<link rel="stylesheet" type="text/css" href="golfcourse.css">
-	 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap" rel="stylesheet">
-</head>
+    <script type="text/javascript" src="golfcourse.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script
+      type="text/javascript"
+      src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+    ></script>
+    <link rel="stylesheet" type="text/css" href="golfcourse.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<body>
+  <body>
     <header>
-    <a href="./index.html"><img src="./logga8.png" alt="logga"></a>
-    
-    <h1>Upptäck Småland och Öland med golf</h1>
+      <a id="logo" href="./index.html"
+        ><img src="./logga8.png" alt="logga"
+      /></a>
+      <div id="googletranslate"></div>
+      <h1>Upptäck Småland och Öland med golf</h1>
+    </header>
+    <br />
+    <p id="back">&larr; Tillbaka till sökresultatet</p>
+    <br />
+    <h1 id="courseName"></h1>
+    <br />
+    <div class="flexbox-container-1">
+      <div class="imgViewer">
+        <img src="./14.jpg" alt="bild" id="picture" />
 
-  </header>
-  <br>
-  <p id="back">&larr; Tillbaka till sökresultatet</p>
-  <br>
-	<h1 id="courseName"></h1>
-	<br>
-	<div class="flexbox-container-1">
-		<div class="imgViewer">
-			<img src="./14.jpg" alt="bild" id="picture">
-			
-			<!--Framåt och bakåt knappar-->
-			<div class="navB">
-			<a id="prev">&#10094;</a>
-			<a id="next">&#10095;</a>
-			</div>
-		</div>
+        <!--Framåt och bakåt knappar-->
+        <div class="navB">
+          <a id="prev">&#10094;</a>
+          <a id="next">&#10095;</a>
+        </div>
+      </div>
 
-		<div class="infoBox">
-			<h3>Info</h3>
-			<!--Här läses information om golfbanan in ifrån Smapi -->
-			<p><strong>Greeenfee: </strong><span id="greenfee"></span> kr.</p>
-			<p><strong>Betyg: </strong><span id="rating"></span> av 5.</p>
-			<p><strong>Studentrabatt: </strong><span id="sDiscount"></span>.</p>
-			<p><strong>Seniorrabatt: </strong><span id="seniorDiscount"></span>.</p>
-			<p>Barnrabatt: <span id="childDiscount"></span>.</p>
-			<br>
-<p> </p>
-<p> </p>
-			<h3>Kontakt</h3>
-			<div id="contact">
-				<p><span id="telephone"></span></p>
-				<p><span id="address"></span></p>
-				<p><span id="zip"></span></p>
-				<p><span id="city"></span></p>
-			</div>
+      <div class="infoBox">
+        <div id="info">
+          <h3>Info</h3>
+          <!--Här läses information om golfbanan in ifrån Smapi -->
+          <p><strong>Greeenfee: </strong><span id="greenfee"></span> kr.</p>
+          <p><strong>Betyg: </strong><span id="rating"></span> av 5.</p>
+          <p><strong>Studentrabatt: </strong><span id="sDiscount"></span>.</p>
+          <p>
+            <strong>Seniorrabatt: </strong><span id="seniorDiscount"></span>.
+          </p>
+          <p><strong>Barnrabatt: </strong><span id="childDiscount"></span>.</p>
+        </div>
+        <br />
 
-			<div class="button" id="booking"></div>
-		</div>
-	</div> <!-- Slut på container 1 -->
+        <div id="contact">
+          <h3>Kontakt</h3>
 
-	<div class="flexbox-container-2">
-		<div class="about">
-			<h3>Om golfbanan</h3>
-			<p id="text">
-				<!--Här läses beskrivning av golfbanan in ifrån Smapi-->
-			</p>
-			<br>
-			<button id="collapsible1">Restauranger i närhet till golfbanan &#43;</button>
-			<div class='spinnerouter'>
-				<img id='spinner' src="Loadingspinner-1s-200px.svg">
-				</div>
-				<table>
-					<tbody id="tableData"></tbody>
-				</table>
-			<button id="collapsible2">Boenden i närhet till golfbanan &#43;</button>
-			<div class='spinnerouter'>
-				<img id='spinner' src="Loadingspinner-1s-200px.svg">
-				</div>
-			<table>
-				
-				<tbody id="tableData2"></tbody>
-			</table>
-			<p id="mapmsg"></p>
-			<div id="map">
-			</div>
-		</div>
+          <p><span id="telephone"></span></p>
+          <p><span id="address"></span></p>
+          <p><span id="zip"></span></p>
+          <p><span id="city"></span></p>
+          <div class="button" id="booking"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Slut på container 1 -->
 
-		<div id="weather">
-			<h3>5 dagars väderprognos</h3>
-			<br>
-			<!--Här läses väder in från SMHI-->
-		</div>
+    <div class="flexbox-container-2">
+      <div class="about">
+        <h3>Om golfbanan</h3>
+        <p id="text">
+          <!--Här läses beskrivning av golfbanan in ifrån Smapi-->
+        </p>
+        <br />
+        <button id="collapsible1">Restauranger i närheten +</button>
+        <div class="spinnerouter">
+          <img
+            class="spinner"
+            src="Loadingspinner-1s-200px.svg"
+            alt="spinner"
+          />
+        </div>
+        <table>
+          <tbody id="tableData"></tbody>
+        </table>
+        <button id="collapsible2">Boenden i närheten +</button>
+        <div class="spinnerouter">
+          <img
+            class="spinner"
+            src="Loadingspinner-1s-200px.svg"
+            alt="spinner"
+          />
+        </div>
+        <table>
+          <tbody id="tableData2"></tbody>
+        </table>
+        <h4 id="mapH">Avstånd till golfbana</h4>
+        <br />
+        <p id="mapmsg"></p>
+        <div id="map"></div>
+      </div>
 
-	</div> <!-- Slut på container 2 -->
-	<footer>
-	  <h4>SMÖGOLF</h4>
-	  <br>
-	  <p>Letar du efter din nästa golfdestination? <br> Smögolf hjälper er hitta er nästa golfdestionation, oavsett om det är en golfresa på tu man hand, med vänner, familj <br> eller arbetslaget. Smögolf hjälper dig att hitta det perfekta golfresemålet utifrån dina preferenser.<br> Upptäck Småland och Öland med golf!</p>
-	  <br>
-	  <p>Telefon: 0470-12345</p>
-	  <p>Mail: smogolf@gmail.com</p>
-	  <p>Adress: Stallvägen xx, 325 56, Växjö</p>
-	</footer>
-</body>
-
+      <div id="weather">
+        <h3>5 dagars väderprognos</h3>
+        <br />
+        <!--Här läses väder in från SMHI-->
+      </div>
+    </div>
+    <!-- Slut på container 2 -->
+    <footer>
+      <h4>SMÖGOLF</h4>
+      <br />
+      <p>
+        Letar du efter din nästa golfdestination? <br />
+        Smögolf hjälper er hitta er nästa golfdestionation, oavsett om det är en
+        golfresa på tu man hand, med vänner, familj <br />
+        eller arbetslaget. Smögolf hjälper dig att hitta det perfekta
+        golfresemålet utifrån dina preferenser.<br />
+        Upptäck Småland och Öland med golf!
+      </p>
+      <br />
+      <p>Telefon: 0470-12345</p>
+      <p>Mail: smogolf@gmail.com</p>
+      <p>Adress: Stallvägen xx, 325 56, Växjö</p>
+    </footer>
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          { pageLanguage: "sv" },
+          "googletranslate"
+        );
+      }
+    </script>
+  </body>
 </html>
